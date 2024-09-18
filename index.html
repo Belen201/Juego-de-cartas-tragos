@@ -77,40 +77,49 @@
             <div></div>
             <div></div>
         </div>
-        <button onclick="girarRuleta()">Girar Ruleta</button>
+        <button id="girarBtn">Girar Ruleta</button>
         <div id="resultado"></div>
     </div>
 
     <script>
+        // Variables globales
+        const opciones = [
+            "Bebe 1 trago",
+            "Bebe 2 tragos",
+            "Bebe 3 tragos",
+            "Bebe 4 tragos",
+            "Bébete el cubata entero",
+            "Un chupito para ti",
+            "Un chupito para otro",
+            "Un chupito para ti y otra persona",
+            "Te salvas"
+        ];
+
+        const ruleta = document.getElementById('ruleta');
+        const resultadoDiv = document.getElementById('resultado');
+        const botonGirar = document.getElementById('girarBtn');
+
+        // Función para girar la ruleta
         function girarRuleta() {
-            // Opciones de la ruleta
-            const opciones = [
-                "Bebe 1 trago",
-                "Bebe 2 tragos",
-                "Bebe 3 tragos",
-                "Bebe 4 tragos",
-                "Bébete el cubata entero",
-                "Un chupito para ti",
-                "Un chupito para otro",
-                "Un chupito para ti y otra persona",
-                "Te salvas"
-            ];
-            
-            // Elegir un índice aleatorio entre 0 y 8
+            // Generar un número aleatorio entre 0 y 8 (para las 9 opciones)
             const randomIndex = Math.floor(Math.random() * opciones.length);
             const resultado = opciones[randomIndex];
 
-            // Girar la ruleta
-            const angulo = 360 * 3 + (randomIndex * 40);  // 3 vueltas completas más el ángulo correspondiente (40 grados por cada opción)
-            const ruleta = document.getElementById('ruleta');
+            // Calcular el ángulo (9 secciones, 360 grados dividido entre 9 = 40 grados por sección)
+            const angulo = 360 * 3 + (randomIndex * 40); // 3 vueltas completas más el ángulo correspondiente
+
+            // Aplicar el giro a la ruleta
             ruleta.style.transition = "transform 3s ease-out";
             ruleta.style.transform = rotate(${angulo}deg);
 
-            // Mostrar el resultado después de que gire
+            // Mostrar el resultado después de que termine de girar (3 segundos)
             setTimeout(() => {
-                document.getElementById('resultado').textContent = Te toca: ${resultado};
-            }, 3000); // Espera 3 segundos para que termine de girar
+                resultadoDiv.textContent = Te toca: ${resultado};
+            }, 3000);
         }
+
+        // Escuchar el clic en el botón y llamar a la función girarRuleta
+        botonGirar.addEventListener('click', girarRuleta);
     </script>
 </body>
 </html>
