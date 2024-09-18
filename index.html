@@ -27,6 +27,7 @@
             border: 5px solid #333;
             position: relative;
             overflow: hidden;
+            transition: transform 3s ease-out; /* Asegurando la animación */
         }
 
         .ruleta div {
@@ -40,6 +41,7 @@
             clip-path: polygon(0 0, 100% 0, 100% 100%);
         }
 
+        /* Colores para cada segmento de la ruleta */
         .ruleta div:nth-child(1) { transform: rotate(0deg); background-color: #1abc9c; }
         .ruleta div:nth-child(2) { transform: rotate(40deg); background-color: #e74c3c; }
         .ruleta div:nth-child(3) { transform: rotate(80deg); background-color: #f39c12; }
@@ -99,8 +101,13 @@
         const resultadoDiv = document.getElementById('resultado');
         const botonGirar = document.getElementById('girarBtn');
 
+        let isSpinning = false; // Variable para evitar giros múltiples
+
         // Función para girar la ruleta
         function girarRuleta() {
+            if (isSpinning) return; // Evita múltiples giros simultáneos
+            isSpinning = true;
+
             // Generar un número aleatorio entre 0 y 8 (para las 9 opciones)
             const randomIndex = Math.floor(Math.random() * opciones.length);
             const resultado = opciones[randomIndex];
@@ -109,12 +116,12 @@
             const angulo = 360 * 3 + (randomIndex * 40); // 3 vueltas completas más el ángulo correspondiente
 
             // Aplicar el giro a la ruleta
-            ruleta.style.transition = "transform 3s ease-out";
             ruleta.style.transform = rotate(${angulo}deg);
 
             // Mostrar el resultado después de que termine de girar (3 segundos)
             setTimeout(() => {
                 resultadoDiv.textContent = Te toca: ${resultado};
+                isSpinning = false; // Permite volver a girar la ruleta
             }, 3000);
         }
 
