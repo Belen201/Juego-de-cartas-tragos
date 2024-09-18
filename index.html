@@ -63,6 +63,12 @@
             background-color: #333; /* Color de la parte frontal */
         }
 
+        .frontal::before {
+            content: 'ZC'; /* Mostrar las siglas "ZC" */
+            font-size: 36px; /* Tamaño de las siglas */
+            color: #fff; /* Color del texto */
+        }
+
         .trasera {
             background-color: #2ecc71; /* Color de la parte trasera (puedes cambiarlo) */
             transform: rotateY(180deg); /* La trasera está volteada inicialmente */
@@ -85,13 +91,13 @@
     <script>
         // Definir las 9 opciones posibles
         const opciones = [
-            "Bebe 1 trago",
+            "Manda 2 trago",
             "Bebe 2 tragos",
-            "Bebe 3 tragos",
-            "Bebe 4 tragos",
+            "Manda 5 tragos",
+            "Bebe 5 tragos",
             "Bébete el cubata entero",
-            "Un chupito para ti",
-            "Un chupito para otro",
+            "Bebe un chupito",
+            "Manda un chupito",
             "Un chupito para ti y otra persona",
             "Te salvas"
         ];
@@ -126,7 +132,7 @@
             const contenidoCarta = document.createElement('div');
             contenidoCarta.classList.add('contenido-carta');
             
-            // Crear la parte frontal de la carta (color)
+            // Crear la parte frontal de la carta (logo ZC)
             const frontal = document.createElement('div');
             frontal.classList.add('frontal');
             frontal.style.backgroundColor = colores[index]; // Asignar color único
