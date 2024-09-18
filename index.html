@@ -31,13 +31,13 @@
             width: 100px;
             height: 150px;
             border: 2px solid #333;
-            background-color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s, background-color 0.3s;
+            color: #fff;
         }
 
         .carta:hover {
@@ -54,16 +54,7 @@
     <div class="container">
         <h1>Juego de Cartas de Tragos</h1>
         <div class="cartas" id="cartas">
-            <!-- Se mostrarán 9 cartas, inicialmente con el texto oculto -->
-            <div class="carta" data-opcion="0">Carta 1</div>
-            <div class="carta" data-opcion="1">Carta 2</div>
-            <div class="carta" data-opcion="2">Carta 3</div>
-            <div class="carta" data-opcion="3">Carta 4</div>
-            <div class="carta" data-opcion="4">Carta 5</div>
-            <div class="carta" data-opcion="5">Carta 6</div>
-            <div class="carta" data-opcion="6">Carta 7</div>
-            <div class="carta" data-opcion="7">Carta 8</div>
-            <div class="carta" data-opcion="8">Carta 9</div>
+            <!-- Aquí se insertarán las cartas -->
         </div>
         <div id="resultado"></div>
     </div>
@@ -82,23 +73,44 @@
             "Te salvas"
         ];
 
-        // Seleccionar todas las cartas
-        const cartas = document.querySelectorAll('.carta');
+        // Colores únicos para las cartas
+        const colores = [
+            "#1abc9c", "#e74c3c", "#3498db", "#9b59b6", "#f39c12", 
+            "#e67e22", "#2ecc71", "#e74c3c", "#9b59b6"
+        ];
+
+        // Seleccionar el contenedor de cartas
+        const cartasContainer = document.getElementById('cartas');
         const resultadoDiv = document.getElementById('resultado');
 
-        // Añadir evento a cada carta
-        cartas.forEach(carta => {
-            carta.addEventListener('click', function() {
-                const opcion = parseInt(this.getAttribute('data-opcion'));
-                const resultado = opciones[opcion];
+        // Función para mezclar un array
+        function mezclarArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
-                // Mostrar el resultado en el div "resultado"
-                resultadoDiv.textContent = `Te toca: ${resultado}`;
+        // Mezclar las opciones
+        mezclarArray(opciones);
+
+        // Crear las cartas dinámicamente
+        opciones.forEach((opcion, index) => {
+            const carta = document.createElement('div');
+            carta.classList.add('carta');
+            carta.style.backgroundColor = colores[index]; // Asignar un color único
+
+            // Añadir evento de clic a cada carta
+            carta.addEventListener('click', function() {
+                resultadoDiv.textContent = `Te toca: ${opcion}`;
                 
-                // Desactivar el evento para que no puedan elegir la misma carta de nuevo
+                // Desactivar la carta después de seleccionarla
                 this.style.pointerEvents = 'none';
-                this.style.backgroundColor = '#f0f0f0';  // Cambiar el color para indicar que ya fue seleccionada
+                this.style.opacity = '0.6'; // Reducir la opacidad para indicar que fue seleccionada
             });
+
+            // Agregar la carta al contenedor
+            cartasContainer.appendChild(carta);
         });
     </script>
 </body>
