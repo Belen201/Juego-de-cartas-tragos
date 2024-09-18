@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruleta de Tragos</title>
+    <title>Juego de Cartas de Tragos</title>
     <style>
-        /* Estilos básicos para centrar la ruleta */
         body {
             display: flex;
             justify-content: center;
@@ -20,71 +19,57 @@
             text-align: center;
         }
 
-        .ruleta {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 5px solid #333;
-            position: relative;
-            overflow: hidden;
-            transition: transform 3s ease-out; /* Asegurando la animación */
+        .cartas {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .ruleta div {
-            width: 50%;
-            height: 50%;
-            background-color: #3498db;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform-origin: left center;
-            clip-path: polygon(0 0, 100% 0, 100% 100%);
-        }
-
-        /* Colores para cada segmento de la ruleta */
-        .ruleta div:nth-child(1) { transform: rotate(0deg); background-color: #1abc9c; }
-        .ruleta div:nth-child(2) { transform: rotate(40deg); background-color: #e74c3c; }
-        .ruleta div:nth-child(3) { transform: rotate(80deg); background-color: #f39c12; }
-        .ruleta div:nth-child(4) { transform: rotate(120deg); background-color: #9b59b6; }
-        .ruleta div:nth-child(5) { transform: rotate(160deg); background-color: #e67e22; }
-        .ruleta div:nth-child(6) { transform: rotate(200deg); background-color: #2ecc71; }
-        .ruleta div:nth-child(7) { transform: rotate(240deg); background-color: #e74c3c; }
-        .ruleta div:nth-child(8) { transform: rotate(280deg); background-color: #f39c12; }
-        .ruleta div:nth-child(9) { transform: rotate(320deg); background-color: #9b59b6; }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
+        .carta {
+            width: 100px;
+            height: 150px;
+            border: 2px solid #333;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
             cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .carta:hover {
+            transform: scale(1.1);
         }
 
         #resultado {
-            margin-top: 20px;
             font-size: 24px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Ruleta de Tragos</h1>
-        <div class="ruleta" id="ruleta">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <h1>Juego de Cartas de Tragos</h1>
+        <div class="cartas" id="cartas">
+            <!-- Se mostrarán 9 cartas, inicialmente con el texto oculto -->
+            <div class="carta" data-opcion="0">Carta 1</div>
+            <div class="carta" data-opcion="1">Carta 2</div>
+            <div class="carta" data-opcion="2">Carta 3</div>
+            <div class="carta" data-opcion="3">Carta 4</div>
+            <div class="carta" data-opcion="4">Carta 5</div>
+            <div class="carta" data-opcion="5">Carta 6</div>
+            <div class="carta" data-opcion="6">Carta 7</div>
+            <div class="carta" data-opcion="7">Carta 8</div>
+            <div class="carta" data-opcion="8">Carta 9</div>
         </div>
-        <button id="girarBtn">Girar Ruleta</button>
         <div id="resultado"></div>
     </div>
 
     <script>
-        // Variables globales
+        // Definir las 9 opciones posibles
         const opciones = [
             "Bebe 1 trago",
             "Bebe 2 tragos",
@@ -97,36 +82,24 @@
             "Te salvas"
         ];
 
-        const ruleta = document.getElementById('ruleta');
+        // Seleccionar todas las cartas
+        const cartas = document.querySelectorAll('.carta');
         const resultadoDiv = document.getElementById('resultado');
-        const botonGirar = document.getElementById('girarBtn');
 
-        let isSpinning = false; // Variable para evitar giros múltiples
+        // Añadir evento a cada carta
+        cartas.forEach(carta => {
+            carta.addEventListener('click', function() {
+                const opcion = parseInt(this.getAttribute('data-opcion'));
+                const resultado = opciones[opcion];
 
-        // Función para girar la ruleta
-        function girarRuleta() {
-            if (isSpinning) return; // Evita múltiples giros simultáneos
-            isSpinning = true;
-
-            // Generar un número aleatorio entre 0 y 8 (para las 9 opciones)
-            const randomIndex = Math.floor(Math.random() * opciones.length);
-            const resultado = opciones[randomIndex];
-
-            // Calcular el ángulo (9 secciones, 360 grados dividido entre 9 = 40 grados por sección)
-            const angulo = 360 * 3 + (randomIndex * 40); // 3 vueltas completas más el ángulo correspondiente
-
-            // Aplicar el giro a la ruleta
-            ruleta.style.transform = rotate(${angulo}deg);
-
-            // Mostrar el resultado después de que termine de girar (3 segundos)
-            setTimeout(() => {
+                // Mostrar el resultado en el div "resultado"
                 resultadoDiv.textContent = Te toca: ${resultado};
-                isSpinning = false; // Permite volver a girar la ruleta
-            }, 3000);
-        }
-
-        // Escuchar el clic en el botón y llamar a la función girarRuleta
-        botonGirar.addEventListener('click', girarRuleta);
+                
+                // Desactivar el evento para que no puedan elegir la misma carta de nuevo
+                this.style.pointerEvents = 'none';
+                this.style.backgroundColor = '#f0f0f0';  // Cambiar el color para indicar que ya fue seleccionada
+            });
+        });
     </script>
 </body>
 </html>
