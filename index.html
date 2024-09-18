@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta de Tragos</title>
+    <style>
+        /* Estilos básicos para centrar la ruleta */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .ruleta {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 5px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ruleta div {
+            width: 50%;
+            height: 50%;
+            background-color: #3498db;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform-origin: left center;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+
+        .ruleta div:nth-child(1) { transform: rotate(0deg); background-color: #1abc9c; }
+        .ruleta div:nth-child(2) { transform: rotate(40deg); background-color: #e74c3c; }
+        .ruleta div:nth-child(3) { transform: rotate(80deg); background-color: #f39c12; }
+        .ruleta div:nth-child(4) { transform: rotate(120deg); background-color: #9b59b6; }
+        .ruleta div:nth-child(5) { transform: rotate(160deg); background-color: #e67e22; }
+        .ruleta div:nth-child(6) { transform: rotate(200deg); background-color: #2ecc71; }
+        .ruleta div:nth-child(7) { transform: rotate(240deg); background-color: #e74c3c; }
+        .ruleta div:nth-child(8) { transform: rotate(280deg); background-color: #f39c12; }
+        .ruleta div:nth-child(9) { transform: rotate(320deg); background-color: #9b59b6; }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ruleta de Tragos</h1>
+        <div class="ruleta" id="ruleta">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <button onclick="girarRuleta()">Girar Ruleta</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        function girarRuleta() {
+            // Opciones de la ruleta
+            const opciones = [
+                "Bebe 1 trago",
+                "Bebe 2 tragos",
+                "Bebe 3 tragos",
+                "Bebe 4 tragos",
+                "Bébete el cubata entero",
+                "Un chupito para ti",
+                "Un chupito para otro",
+                "Un chupito para ti y otra persona",
+                "Te salvas"
+            ];
+            
+            // Elegir un índice aleatorio entre 0 y 8
+            const randomIndex = Math.floor(Math.random() * opciones.length);
+            const resultado = opciones[randomIndex];
+
+            // Girar la ruleta
+            const angulo = 360 * 3 + (randomIndex * 40);  // 3 vueltas completas más el ángulo correspondiente (40 grados por cada opción)
+            const ruleta = document.getElementById('ruleta');
+            ruleta.style.transition = "transform 3s ease-out";
+            ruleta.style.transform = rotate(${angulo}deg);
+
+            // Mostrar el resultado después de que gire
+            setTimeout(() => {
+                document.getElementById('resultado').textContent = Te toca: ${resultado};
+            }, 3000); // Espera 3 segundos para que termine de girar
+        }
+    </script>
+</body>
+</html>
