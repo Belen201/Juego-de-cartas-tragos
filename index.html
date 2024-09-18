@@ -30,18 +30,42 @@
         .carta {
             width: 100px;
             height: 150px;
-            border: 2px solid #333;
+            perspective: 1000px; /* Añade perspectiva para el efecto 3D */
+        }
+
+        .contenido-carta {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .carta.girada .contenido-carta {
+            transform: rotateY(180deg);
+        }
+
+        .frontal, .trasera {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
-            color: #fff;
+            border: 2px solid #333;
+            font-size: 18px;
+            color: white;
         }
 
-        .carta:hover {
-            transform: scale(1.1);
+        .frontal {
+            background-color: #333; /* Color de la parte frontal */
+        }
+
+        .trasera {
+            background-color: #2ecc71; /* Color de la parte trasera (puedes cambiarlo) */
+            transform: rotateY(180deg); /* La trasera está volteada inicialmente */
         }
 
         #resultado {
@@ -56,7 +80,6 @@
         <div class="cartas" id="cartas">
             <!-- Aquí se insertarán las cartas -->
         </div>
-        <div id="resultado"></div>
     </div>
 
     <script>
@@ -81,7 +104,6 @@
 
         // Seleccionar el contenedor de cartas
         const cartasContainer = document.getElementById('cartas');
-        const resultadoDiv = document.getElementById('resultado');
 
         // Función para mezclar un array
         function mezclarArray(array) {
@@ -96,17 +118,36 @@
 
         // Crear las cartas dinámicamente
         opciones.forEach((opcion, index) => {
+            // Crear el contenedor de la carta
             const carta = document.createElement('div');
             carta.classList.add('carta');
-            carta.style.backgroundColor = colores[index]; // Asignar un color único
+            
+            // Crear el contenido que se va a girar
+            const contenidoCarta = document.createElement('div');
+            contenidoCarta.classList.add('contenido-carta');
+            
+            // Crear la parte frontal de la carta (color)
+            const frontal = document.createElement('div');
+            frontal.classList.add('frontal');
+            frontal.style.backgroundColor = colores[index]; // Asignar color único
+            
+            // Crear la parte trasera de la carta (reto)
+            const trasera = document.createElement('div');
+            trasera.classList.add('trasera');
+            trasera.textContent = opcion; // Mostrar el reto
 
-            // Añadir evento de clic a cada carta
+            // Añadir la parte frontal y trasera al contenido de la carta
+            contenidoCarta.appendChild(frontal);
+            contenidoCarta.appendChild(trasera);
+
+            // Añadir el contenido de la carta al contenedor de la carta
+            carta.appendChild(contenidoCarta);
+
+            // Añadir evento para girar la carta al hacer clic
             carta.addEventListener('click', function() {
-                resultadoDiv.textContent = `Te toca: ${opcion}`;
-                
-                // Desactivar la carta después de seleccionarla
+                carta.classList.add('girada');
+                // Desactivar el clic una vez que se ha girado la carta
                 this.style.pointerEvents = 'none';
-                this.style.opacity = '0.6'; // Reducir la opacidad para indicar que fue seleccionada
             });
 
             // Agregar la carta al contenedor
