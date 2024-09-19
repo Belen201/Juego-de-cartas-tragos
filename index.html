@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de la Oca de Beber</title>
+    <title>Juego de la Oca de Beber - Caracol</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,9 +27,11 @@
         }
         .tablero {
             display: grid;
-            grid-template-columns: repeat(10, 60px);
+            grid-template-columns: repeat(6, 60px);
+            grid-template-rows: repeat(6, 60px);
             gap: 5px;
             justify-content: center;
+            margin: 20px auto;
         }
         .casilla {
             width: 60px;
@@ -39,7 +41,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 10px;
+            font-size: 12px;
             border-radius: 5px;
             position: relative;
         }
@@ -72,7 +74,7 @@
 </head>
 <body>
 
-    <h1>Juego de la Oca de Beber</h1>
+    <h1>Juego de la Oca de Beber - Caracol</h1>
 
     <div id="oca" class="section active">
         <h2>Tablero</h2>
@@ -91,18 +93,27 @@
             "Inicio", "Bebe 1 trago", "Manda 2 tragos", "Yo nunca", "Bebe 3 tragos", 
             "El más probable que", "Salta un turno", "Chupito", "Manda 3 tragos", "Yo nunca", 
             "Bebe 2 tragos", "Retrocede 2 casillas", "Manda 4 tragos", "Chupito", "El más probable que", 
-            "Bebe 4 tragos", "Manda 5 tragos", "Yo nunca", "Fin"
+            "Bebe 4 tragos", "Manda 5 tragos", "Yo nunca", "Bebe 1 trago", "Bebe 2 tragos",
+            "Bebe 3 tragos", "Bebe 4 tragos", "Chupito", "Yo nunca", "Retrocede 3 casillas",
+            "Manda 2 tragos", "Chupito", "Salta un turno", "Manda 4 tragos", "El más probable que", 
+            "Bebe 5 tragos", "Yo nunca", "Manda 3 tragos", "Chupito", "Salta un turno", "Fin"
+        ];
+
+        // Definir la disposición de las casillas en forma de caracol
+        const snailPattern = [
+            0, 1, 2, 3, 4, 5, 11, 17, 23, 29, 35, 34, 33, 32, 31, 30, 24, 18, 12, 6, 7, 8, 9, 10, 16, 22, 28, 27, 26, 25, 19, 13, 14, 15, 21, 20
         ];
 
         const tablero = document.getElementById("tablero");
 
         // Crear el tablero visualmente
-        casillas.forEach((casilla, index) => {
+        for (let i = 0; i < 36; i++) {
             const divCasilla = document.createElement("div");
             divCasilla.classList.add("casilla");
-            divCasilla.innerText = `${index + 1}\n${casilla}`; // Mostrar el número de la casilla y la acción
+            const index = snailPattern[i];  // Asignar las casillas según el patrón de caracol
+            divCasilla.innerText = `${index + 1}\n${casillas[index]}`; // Mostrar el número de la casilla y la acción
             tablero.appendChild(divCasilla);
-        });
+        }
 
         // Máximo 6 jugadores, con fichas de diferentes colores
         const jugadores = [
@@ -127,7 +138,7 @@
         jugadores.forEach(jugador => {
             const ficha = document.createElement("div");
             ficha.classList.add("ficha", jugador.ficha);
-            tablero.children[0].appendChild(ficha); // Iniciar en la casilla 0 (Inicio)
+            tablero.children[snailPattern[0]].appendChild(ficha); // Iniciar en la casilla 0 (Inicio)
             jugador.elementoFicha = ficha; // Guardar referencia al elemento de la ficha
         });
 
@@ -162,7 +173,7 @@
             jugador.elementoFicha.remove();
             
             // Añadir la ficha a la nueva casilla
-            const nuevaCasilla = tablero.children[jugador.posicion];
+            const nuevaCasilla = tablero.children[snailPattern[jugador.posicion]];
             nuevaCasilla.appendChild(jugador.elementoFicha);
         }
     </script>
