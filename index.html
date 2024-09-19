@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juegos de Beber: Cartas y Oca</title>
+    <title>Juego de la Oca de Beber</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,49 +39,43 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 14px;
+            font-size: 10px;
             border-radius: 5px;
+            position: relative;
         }
-        .card {
-            width: 100px;
-            height: 150px;
-            background-color: #f1c40f;
-            display: inline-block;
-            margin: 10px;
-            font-size: 16px;
-            line-height: 150px;
-            color: white;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
+        .ficha {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
         }
-        #cardBack {
-            background-color: #2c3e50;
+        .ficha.jugador1 {
+            background-color: red;
+        }
+        .ficha.jugador2 {
+            background-color: blue;
+        }
+        .ficha.jugador3 {
+            background-color: green;
+        }
+        .ficha.jugador4 {
+            background-color: yellow;
+        }
+        .ficha.jugador5 {
+            background-color: purple;
+        }
+        .ficha.jugador6 {
+            background-color: orange;
         }
     </style>
 </head>
 <body>
 
-    <h1>Juegos de Beber</h1>
+    <h1>Juego de la Oca de Beber</h1>
 
-    <div id="menu">
-        <button onclick="showSection('cartas')">Juego de Cartas</button>
-        <button onclick="showSection('oca')">Juego de la Oca</button>
-    </div>
-
-    <!-- Juego de Cartas -->
-    <div id="cartas" class="section">
-        <h2>Juego de Cartas</h2>
-        <p>Haz clic en una carta para descubrir la acción:</p>
-        <div id="cardsContainer">
-            <!-- Cartas generadas dinámicamente -->
-        </div>
-        <button onclick="shuffleCards()">Barajar Cartas</button>
-    </div>
-
-    <!-- Juego de la Oca -->
-    <div id="oca" class="section">
-        <h2>Juego de la Oca de Beber</h2>
+    <div id="oca" class="section active">
+        <h2>Tablero</h2>
         <div class="tablero" id="tablero"></div>
         <div id="acciones">
             <div id="turnoJugador"></div>
@@ -92,64 +86,12 @@
     </div>
 
     <script>
-        // Función para alternar entre las secciones de la página
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        // --------------------
-        // Juego de Cartas
-        // --------------------
-        const actions = [
-            "Bebe 1 trago",
-            "Bebe 2 tragos",
-            "Bebe 3 tragos",
-            "Bebe 4 tragos",
-            "Bébete el cubata entero",
-            "Un chupito para ti",
-            "Un chupito para otro",
-            "Un chupito para ti y otra persona",
-            "Te salvas"
-        ];
-
-        const cardsContainer = document.getElementById("cardsContainer");
-
-        // Crear las cartas
-        function createCards() {
-            actions.forEach((action, index) => {
-                const card = document.createElement("div");
-                card.classList.add("card");
-                card.id = `card${index}`;
-                card.innerHTML = `<span id="cardBack">ZC</span>`;
-                card.onclick = () => revealCard(card, action);
-                cardsContainer.appendChild(card);
-            });
-        }
-
-        // Revelar el contenido de la carta
-        function revealCard(card, action) {
-            card.innerHTML = action;
-        }
-
-        // Barajar las cartas
-        function shuffleCards() {
-            const shuffledActions = actions.sort(() => Math.random() - 0.5);
-            cardsContainer.innerHTML = ""; // Limpiar las cartas
-            createCards(); // Volver a crear las cartas
-        }
-
-        createCards(); // Crear las cartas al cargar la página
-
-        // --------------------
-        // Juego de la Oca
-        // --------------------
+        // Definición de las casillas y sus acciones
         const casillas = [
-            "Inicio", "Bebe 1 trago", "Manda 2 tragos", "Yo nunca", "Bebe 3 tragos", "El más probable que", "Salta un turno",
-            "Chupito", "Manda 3 tragos", "Yo nunca", "Bebe 2 tragos", "Retrocede 2 casillas", "Manda 4 tragos", 
-            "Chupito", "El más probable que", "Bebe 4 tragos", "Manda 5 tragos", "Yo nunca", "Fin"
+            "Inicio", "Bebe 1 trago", "Manda 2 tragos", "Yo nunca", "Bebe 3 tragos", 
+            "El más probable que", "Salta un turno", "Chupito", "Manda 3 tragos", "Yo nunca", 
+            "Bebe 2 tragos", "Retrocede 2 casillas", "Manda 4 tragos", "Chupito", "El más probable que", 
+            "Bebe 4 tragos", "Manda 5 tragos", "Yo nunca", "Fin"
         ];
 
         const tablero = document.getElementById("tablero");
@@ -158,34 +100,43 @@
         casillas.forEach((casilla, index) => {
             const divCasilla = document.createElement("div");
             divCasilla.classList.add("casilla");
-            divCasilla.innerText = index + 1; // Número de la casilla
-            divCasilla.setAttribute("data-info", casilla); // Información de la casilla
+            divCasilla.innerText = `${index + 1}\n${casilla}`; // Mostrar el número de la casilla y la acción
             tablero.appendChild(divCasilla);
         });
 
-        // Máximo 6 jugadores
+        // Máximo 6 jugadores, con fichas de diferentes colores
         const jugadores = [
-            { nombre: "Jugador 1", posicion: 0 },
-            { nombre: "Jugador 2", posicion: 0 },
-            { nombre: "Jugador 3", posicion: 0 },
-            { nombre: "Jugador 4", posicion: 0 },
-            { nombre: "Jugador 5", posicion: 0 },
-            { nombre: "Jugador 6", posicion: 0 }
+            { nombre: "Jugador 1", posicion: 0, ficha: "jugador1" },
+            { nombre: "Jugador 2", posicion: 0, ficha: "jugador2" },
+            { nombre: "Jugador 3", posicion: 0, ficha: "jugador3" },
+            { nombre: "Jugador 4", posicion: 0, ficha: "jugador4" },
+            { nombre: "Jugador 5", posicion: 0, ficha: "jugador5" },
+            { nombre: "Jugador 6", posicion: 0, ficha: "jugador6" }
         ];
 
         let turnoActual = 0;
 
         const turnoJugadorDiv = document.getElementById("turnoJugador");
-        turnoJugadorDiv.innerText = `Turno de: ${jugadores[turnoActual].nombre}`;
-
         const botonDado = document.getElementById("lanzarDado");
         const resultadoDado = document.getElementById("resultadoDado");
         const mensajeAccion = document.getElementById("mensajeAccion");
 
+        turnoJugadorDiv.innerText = `Turno de: ${jugadores[turnoActual].nombre}`;
+
+        // Añadir las fichas al tablero
+        jugadores.forEach(jugador => {
+            const ficha = document.createElement("div");
+            ficha.classList.add("ficha", jugador.ficha);
+            tablero.children[0].appendChild(ficha); // Iniciar en la casilla 0 (Inicio)
+            jugador.elementoFicha = ficha; // Guardar referencia al elemento de la ficha
+        });
+
+        // Función para lanzar el dado y mover la ficha
         botonDado.addEventListener("click", () => {
             const dado = Math.floor(Math.random() * 6) + 1;
             resultadoDado.innerText = `El dado ha salido: ${dado}`;
 
+            // Mover al jugador en función del dado
             jugadores[turnoActual].posicion += dado;
 
             if (jugadores[turnoActual].posicion >= casillas.length - 1) {
@@ -194,12 +145,26 @@
                 return;
             }
 
+            // Mover la ficha visualmente
+            moverFicha(jugadores[turnoActual]);
+
             const casillaActual = casillas[jugadores[turnoActual].posicion];
             mensajeAccion.innerText = `${jugadores[turnoActual].nombre} ha caído en la casilla ${jugadores[turnoActual].posicion + 1}: ${casillaActual}`;
 
+            // Pasar el turno al siguiente jugador
             turnoActual = (turnoActual + 1) % jugadores.length;
             turnoJugadorDiv.innerText = `Turno de: ${jugadores[turnoActual].nombre}`;
         });
+
+        // Función para mover la ficha visualmente al tablero
+        function moverFicha(jugador) {
+            // Remover la ficha de la casilla actual
+            jugador.elementoFicha.remove();
+            
+            // Añadir la ficha a la nueva casilla
+            const nuevaCasilla = tablero.children[jugador.posicion];
+            nuevaCasilla.appendChild(jugador.elementoFicha);
+        }
     </script>
 
 </body>
