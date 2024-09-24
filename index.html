@@ -52,24 +52,12 @@
             position: absolute;
             bottom: 5px;
         }
-        .ficha.jugador1 {
-            background-color: red;
-        }
-        .ficha.jugador2 {
-            background-color: blue;
-        }
-        .ficha.jugador3 {
-            background-color: green;
-        }
-        .ficha.jugador4 {
-            background-color: yellow;
-        }
-        .ficha.jugador5 {
-            background-color: purple;
-        }
-        .ficha.jugador6 {
-            background-color: orange;
-        }
+        .ficha.jugador1 { background-color: red; }
+        .ficha.jugador2 { background-color: blue; }
+        .ficha.jugador3 { background-color: green; }
+        .ficha.jugador4 { background-color: yellow; }
+        .ficha.jugador5 { background-color: purple; }
+        .ficha.jugador6 { background-color: orange; }
         .card {
             width: 150px;
             height: 200px;
@@ -90,9 +78,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        .card img {
-            width: 100px;
         }
         .jugador-nombre {
             margin: 10px;
@@ -122,12 +107,8 @@
 
     <!-- Pantalla de selección de juego -->
     <div id="pantallaSeleccion" class="section active">
-        <button onclick="mostrarSeccion('cartas')">
-            <img src="cartas.png" alt="Cartas" width="40" height="40"> Juego de Cartas
-        </button>
-        <button onclick="mostrarSeccion('oca')">
-            <img src="cerveza.png" alt="Cerveza" width="40" height="40"> Ocalimocho
-        </button>
+        <button onclick="mostrarSeccion('cartas')">Juego de Cartas</button>
+        <button onclick="mostrarSeccion('oca')">Ocalimocho</button>
     </div>
 
     <!-- Juego de Cartas -->
@@ -161,7 +142,6 @@
                 <label for="jugador2">Jugador 2: </label>
                 <input type="text" id="jugador2" class="jugador-nombre" placeholder="Nombre del jugador 2">
             </div>
-            <!-- Añadir más jugadores si es necesario -->
             <button onclick="iniciarJuego()">Iniciar Juego</button>
         </div>
 
@@ -206,3 +186,24 @@
         ];
 
         // Función para girar la carta
+        function girarCarta(carta, num) {
+            const resultado = accionesCartas[num - 1];
+            carta.innerHTML = resultado; // Mostrar acción en la carta
+            carta.classList.remove('back'); // Remover clase de reverso
+        }
+
+        function iniciarJuego() {
+            const jugador1 = document.getElementById('jugador1').value;
+            const jugador2 = document.getElementById('jugador2').value;
+
+            if (jugador1 === '' || jugador2 === '') {
+                alert("Por favor, ingresa los nombres de los jugadores.");
+                return;
+            }
+
+            document.getElementById('turnoJugador').innerHTML = `Turno de: ${jugador1}`;
+            // Inicializar el juego aquí...
+        }
+
+        document.getElementById('lanzarDado').addEventListener('click', function() {
+            const dado = Math.floor(Math.random() * 6) + 1; // Número
