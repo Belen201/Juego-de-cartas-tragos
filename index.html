@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de la Oca de Beber</title>
+    <title>Juegos de Beber - Ocalimocho</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,9 +27,11 @@
         }
         .tablero {
             display: grid;
-            grid-template-columns: repeat(10, 60px);
+            grid-template-columns: repeat(6, 60px);
+            grid-template-rows: repeat(6, 60px);
             gap: 5px;
             justify-content: center;
+            margin: 20px auto;
         }
         .casilla {
             width: 60px;
@@ -39,7 +41,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 10px;
+            font-size: 12px;
             border-radius: 5px;
             position: relative;
         }
@@ -68,104 +70,147 @@
         .ficha.jugador6 {
             background-color: orange;
         }
+        .card {
+            width: 150px;
+            height: 200px;
+            display: inline-block;
+            margin: 20px;
+            background-color: lightblue;
+            text-align: center;
+            line-height: 200px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .card.back {
+            background-color: #333;
+            color: white;
+            line-height: normal;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card img {
+            width: 100px;
+        }
+        .jugador-nombre {
+            margin: 10px;
+        }
+        .tablero-fondo {
+            background-image: url('https://example.com/tablero-oca.jpg');
+            background-size: cover;
+        }
+        .dado {
+            font-size: 30px;
+        }
+        .descripcion-casillas {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .descripcion-casillas h3 {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Juego de la Oca de Beber</h1>
+    <h1>Juegos de Beber</h1>
 
-    <div id="oca" class="section active">
-        <h2>Tablero</h2>
+    <!-- Pantalla de selección de juego -->
+    <div id="pantallaSeleccion" class="section active">
+        <button onclick="mostrarSeccion('cartas')">
+            <img src="https://example.com/cartas.png" alt="Cartas" width="40" height="40"> Juego de Cartas
+        </button>
+        <button onclick="mostrarSeccion('oca')">
+            <img src="https://example.com/cerveza.png" alt="Cerveza" width="40" height="40"> Ocalimocho
+        </button>
+    </div>
+
+    <!-- Juego de Cartas -->
+    <div id="cartas" class="section" style="background-image: url('https://example.com/tapete.jpg'); background-size: cover;">
+        <h2>Juego de Cartas</h2>
+        <div class="cards">
+            <div class="card back" onclick="girarCarta(this, 1)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 2)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 3)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 4)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 5)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 6)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 7)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 8)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 9)">ZC</div>
+        </div>
+        <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
+    </div>
+
+    <!-- Ocalimocho -->
+    <div id="oca" class="section tablero-fondo">
+        <h2>Ocalimocho</h2>
+
+        <!-- Sección para elegir jugadores -->
+        <div id="jugadores">
+            <div>
+                <label for="jugador1">Jugador 1: </label>
+                <input type="text" id="jugador1" class="jugador-nombre" placeholder="Nombre del jugador 1">
+            </div>
+            <div>
+                <label for="jugador2">Jugador 2: </label>
+                <input type="text" id="jugador2" class="jugador-nombre" placeholder="Nombre del jugador 2">
+            </div>
+            <!-- Añadir más jugadores si es necesario -->
+            <button onclick="iniciarJuego()">Iniciar Juego</button>
+        </div>
+
+        <!-- Tablero de la Oca -->
         <div class="tablero" id="tablero"></div>
         <div id="acciones">
             <div id="turnoJugador"></div>
+            <div class="dado" id="dadoVisual"></div>
             <button id="lanzarDado">Lanzar Dado</button>
             <p id="resultadoDado"></p>
             <p id="mensajeAccion"></p>
         </div>
+        <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
+
+        <!-- Descripción de las casillas -->
+        <div class="descripcion-casillas">
+            <h3>Descripción de las casillas:</h3>
+            <p><strong>1. Casilla de la Oca:</strong> Avanzas a la siguiente casilla de oca y todos deben beber un trago.</p>
+            <p><strong>2. Casilla de la Calavera:</strong> Retrocedes y debes beber un trago como castigo.</p>
+            <p><strong>3. El Pozo:</strong> Quedas atrapado y debes beber un trago en cada turno hasta que otro jugador te libere.</p>
+            <p><strong>4. El Laberinto:</strong> Retrocedes varias casillas y bebes la cantidad de tragos equivalentes.</p>
+            <p><strong>5. El Puente:</strong> Avanzas o retrocedes a la otra casilla de puente y todos beben un trago.</p>
+            <p><strong>6. Casilla del Bar:</strong> Bebes el doble o haces que otro jugador beba en tu lugar.</p>
+            <!-- Añadir más descripciones según los retos -->
+        </div>
     </div>
 
     <script>
-        // Definición de las casillas y sus acciones
-        const casillas = [
-            "Inicio", "Bebe 1 trago", "Manda 2 tragos", "Yo nunca", "Bebe 3 tragos", 
-            "El más probable que", "Salta un turno", "Chupito", "Manda 3 tragos", "Yo nunca", 
-            "Bebe 2 tragos", "Retrocede 2 casillas", "Manda 4 tragos", "Chupito", "El más probable que", 
-            "Bebe 4 tragos", "Manda 5 tragos", "Yo nunca", "Fin"
-        ];
-
-        const tablero = document.getElementById("tablero");
-
-        // Crear el tablero visualmente
-        casillas.forEach((casilla, index) => {
-            const divCasilla = document.createElement("div");
-            divCasilla.classList.add("casilla");
-            divCasilla.innerText = `${index + 1}\n${casilla}`; // Mostrar el número de la casilla y la acción
-            tablero.appendChild(divCasilla);
-        });
-
-        // Máximo 6 jugadores, con fichas de diferentes colores
-        const jugadores = [
-            { nombre: "Jugador 1", posicion: 0, ficha: "jugador1" },
-            { nombre: "Jugador 2", posicion: 0, ficha: "jugador2" },
-            { nombre: "Jugador 3", posicion: 0, ficha: "jugador3" },
-            { nombre: "Jugador 4", posicion: 0, ficha: "jugador4" },
-            { nombre: "Jugador 5", posicion: 0, ficha: "jugador5" },
-            { nombre: "Jugador 6", posicion: 0, ficha: "jugador6" }
-        ];
-
-        let turnoActual = 0;
-
-        const turnoJugadorDiv = document.getElementById("turnoJugador");
-        const botonDado = document.getElementById("lanzarDado");
-        const resultadoDado = document.getElementById("resultadoDado");
-        const mensajeAccion = document.getElementById("mensajeAccion");
-
-        turnoJugadorDiv.innerText = `Turno de: ${jugadores[turnoActual].nombre}`;
-
-        // Añadir las fichas al tablero
-        jugadores.forEach(jugador => {
-            const ficha = document.createElement("div");
-            ficha.classList.add("ficha", jugador.ficha);
-            tablero.children[0].appendChild(ficha); // Iniciar en la casilla 0 (Inicio)
-            jugador.elementoFicha = ficha; // Guardar referencia al elemento de la ficha
-        });
-
-        // Función para lanzar el dado y mover la ficha
-        botonDado.addEventListener("click", () => {
-            const dado = Math.floor(Math.random() * 6) + 1;
-            resultadoDado.innerText = `El dado ha salido: ${dado}`;
-
-            // Mover al jugador en función del dado
-            jugadores[turnoActual].posicion += dado;
-
-            if (jugadores[turnoActual].posicion >= casillas.length - 1) {
-                mensajeAccion.innerText = `${jugadores[turnoActual].nombre} ha ganado! ¡Fin del juego!`;
-                botonDado.disabled = true;
-                return;
-            }
-
-            // Mover la ficha visualmente
-            moverFicha(jugadores[turnoActual]);
-
-            const casillaActual = casillas[jugadores[turnoActual].posicion];
-            mensajeAccion.innerText = `${jugadores[turnoActual].nombre} ha caído en la casilla ${jugadores[turnoActual].posicion + 1}: ${casillaActual}`;
-
-            // Pasar el turno al siguiente jugador
-            turnoActual = (turnoActual + 1) % jugadores.length;
-            turnoJugadorDiv.innerText = `Turno de: ${jugadores[turnoActual].nombre}`;
-        });
-
-        // Función para mover la ficha visualmente al tablero
-        function moverFicha(jugador) {
-            // Remover la ficha de la casilla actual
-            jugador.elementoFicha.remove();
-            
-            // Añadir la ficha a la nueva casilla
-            const nuevaCasilla = tablero.children[jugador.posicion];
-            nuevaCasilla.appendChild(jugador.elementoFicha);
+        // Función para mostrar la sección seleccionada
+        function mostrarSeccion(seccionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(seccionId).classList.add('active');
         }
-    </script>
 
-</body>
-</html>
+        // Configuración del juego de cartas
+        const accionesCartas = [
+            "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
+            "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
+            "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
+        ];
+
+        // Función para girar la carta
+        function girarCarta(elemento, indice) {
+            elemento.classList.remove("back");
+            elemento.innerText = accionesCartas[indice - 1];
+        }
+
+        // Configuración de las casillas de Ocalimocho
+        const casillas = [
+            "Inicio", "De oca a oca y tiro porque me toca", "
