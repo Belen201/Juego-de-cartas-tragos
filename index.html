@@ -98,7 +98,7 @@
             margin: 10px;
         }
         .tablero-fondo {
-            background-image: url('https://example.com/tablero-oca.jpg');
+            background-image: url('tablero-oca.jpg'); /* Cambiar a una URL válida */
             background-size: cover;
         }
         .dado {
@@ -123,15 +123,15 @@
     <!-- Pantalla de selección de juego -->
     <div id="pantallaSeleccion" class="section active">
         <button onclick="mostrarSeccion('cartas')">
-            <img src="https://example.com/cartas.png" alt="Cartas" width="40" height="40"> Juego de Cartas
+            <img src="cartas.png" alt="Cartas" width="40" height="40"> Juego de Cartas
         </button>
         <button onclick="mostrarSeccion('oca')">
-            <img src="https://example.com/cerveza.png" alt="Cerveza" width="40" height="40"> Ocalimocho
+            <img src="cerveza.png" alt="Cerveza" width="40" height="40"> Ocalimocho
         </button>
     </div>
 
     <!-- Juego de Cartas -->
-    <div id="cartas" class="section" style="background-image: url('https://example.com/tapete.jpg'); background-size: cover;">
+    <div id="cartas" class="section" style="background-image: url('tapete.jpg'); background-size: cover;">
         <h2>Juego de Cartas</h2>
         <div class="cards">
             <div class="card back" onclick="girarCarta(this, 1)">ZC</div>
@@ -206,11 +206,3 @@
         ];
 
         // Función para girar la carta
-        function girarCarta(elemento, indice) {
-            elemento.classList.remove("back");
-            elemento.innerText = accionesCartas[indice - 1];
-        }
-
-        // Configuración de las casillas de Ocalimocho
-        const casillas = [
-            "Inicio", "De oca a oca y tiro porque me toca", "
