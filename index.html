@@ -25,6 +25,48 @@
             font-size: 16px;
             cursor: pointer;
         }
+        /* Estilos de cartas */
+        .cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .card {
+            width: 100px;
+            height: 150px;
+            background-color: #3498db;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            transition: transform 0.5s;
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            display: none;
+        }
+        .card.back {
+            background-color: #333;
+        }
+        .card.flipped img {
+            display: block;
+        }
+        .card.flipped div {
+            display: none;
+        }
+        .resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        /* Estilos de columnas de retos */
         .columnas {
             display: flex;
             justify-content: space-around;
@@ -40,11 +82,10 @@
             margin: 5px;
             border-radius: 5px;
             cursor: pointer;
+            display: none;
         }
-        .resultado {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
+        .opcion.visible {
+            display: block;
         }
     </style>
 </head>
@@ -55,7 +96,6 @@
     <!-- Pantalla de selección de juego -->
     <div id="pantallaSeleccion" class="section active">
         <button onclick="mostrarSeccion('cartas')">Juego de Cartas</button>
-        <button onclick="mostrarSeccion('oca')">Ocalimocho</button>
         <button onclick="mostrarSeccion('retos')">Retos</button>
     </div>
 
@@ -63,28 +103,42 @@
     <div id="cartas" class="section">
         <h2>Juego de Cartas</h2>
         <div class="cards">
-            <div class="card back" onclick="girarCarta(this, 1)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 2)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 3)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 4)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 5)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 6)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 7)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 8)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 9)">ZC</div>
-        </div>
-        <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
-    </div>
-
-    <!-- Ocalimocho -->
-    <div id="oca" class="section">
-        <h2>Ocalimocho</h2>
-        <div class="tablero" id="tablero"></div>
-        <div id="acciones">
-            <div id="turnoJugador"></div>
-            <button id="lanzarDado">Lanzar Dado</button>
-            <p id="resultadoDado"></p>
-            <p id="mensajeAccion"></p>
+            <div class="card back" onclick="girarCarta(this, 1)">
+                <img src="https://via.placeholder.com/100x150?text=Carta1" alt="Carta 1">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 2)">
+                <img src="https://via.placeholder.com/100x150?text=Carta2" alt="Carta 2">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 3)">
+                <img src="https://via.placeholder.com/100x150?text=Carta3" alt="Carta 3">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 4)">
+                <img src="https://via.placeholder.com/100x150?text=Carta4" alt="Carta 4">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 5)">
+                <img src="https://via.placeholder.com/100x150?text=Carta5" alt="Carta 5">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 6)">
+                <img src="https://via.placeholder.com/100x150?text=Carta6" alt="Carta 6">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 7)">
+                <img src="https://via.placeholder.com/100x150?text=Carta7" alt="Carta 7">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 8)">
+                <img src="https://via.placeholder.com/100x150?text=Carta8" alt="Carta 8">
+                <div>ZC</div>
+            </div>
+            <div class="card back" onclick="girarCarta(this, 9)">
+                <img src="https://via.placeholder.com/100x150?text=Carta9" alt="Carta 9">
+                <div>ZC</div>
+            </div>
         </div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
@@ -95,23 +149,23 @@
         <div class="columnas">
             <div class="columna">
                 <h3>Consigue que un...</h3>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Sintexo')">Sintexo</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Zarzas')">Zarzas</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Cencerros')">Cencerros</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Revolución')">Revolución</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Nómadas')">Nómadas</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Ñapas')">Ñapas</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Alguien que no tenga peña')">Alguien sin peña</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'DJ')">DJ</div>
+                <div class="opcion" id="grupo1">Sintexo</div>
+                <div class="opcion" id="grupo2">Zarzas</div>
+                <div class="opcion" id="grupo3">Cencerros</div>
+                <div class="opcion" id="grupo4">Revolución</div>
+                <div class="opcion" id="grupo5">Nómadas</div>
+                <div class="opcion" id="grupo6">Ñapas</div>
+                <div class="opcion" id="grupo7">Alguien sin peña</div>
+                <div class="opcion" id="grupo8">DJ</div>
             </div>
             <div class="columna">
                 <h3>Haga el reto de...</h3>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Beber un chupito')">Beber un chupito</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Subir al escenario')">Subir al escenario</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Bebérse un cubata entero')">Bebérse un cubata entero</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Dar una vuelta en el aire')">Dar una vuelta en el aire</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Hacer un brindis')">Hacer un brindis</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Cantar una canción')">Cantar una canción</div>
+                <div class="opcion" id="reto1">Beber un chupito</div>
+                <div class="opcion" id="reto2">Subir al escenario</div>
+                <div class="opcion" id="reto3">Beberse un cubata entero</div>
+                <div class="opcion" id="reto4">Dar una vuelta en el aire</div>
+                <div class="opcion" id="reto5">Hacer un brindis</div>
+                <div class="opcion" id="reto6">Cantar una canción</div>
             </div>
         </div>
         <button onclick="generarReto()">Generar Reto</button>
@@ -128,40 +182,31 @@
             document.getElementById(seccionId).classList.add('active');
         }
 
-        // Configuración de juego de cartas
+        // Configuración del juego de cartas
         const accionesCartas = [
             "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
             "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
             "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
         ];
 
+        // Función para girar la carta
         function girarCarta(elemento, indice) {
-            elemento.classList.remove("back");
-            elemento.innerText = accionesCartas[indice - 1];
+            elemento.classList.add('flipped');
+            const img = elemento.querySelector('img');
+            img.src = `https://via.placeholder.com/100x150?text=${accionesCartas[indice - 1].replace(/ /g, '+')}`;
         }
 
         // Opciones seleccionadas en el juego de retos
         let grupoSeleccionado = '';
         let retoSeleccionado = '';
 
-        // Función para seleccionar una opción
-        function seleccionarOpcion(tipo, valor) {
-            if (tipo === 'grupo') {
-                grupoSeleccionado = valor;
-            } else if (tipo === 'reto') {
-                retoSeleccionado = valor;
-            }
-        }
-
-        // Función para generar el reto
+        // Función para generar el reto y mostrar las opciones
         function generarReto() {
-            if (grupoSeleccionado && retoSeleccionado) {
-                const resultado = `Consigue que un ${grupoSeleccionado} ${retoSeleccionado}.`;
-                document.getElementById('resultadoReto').innerText = resultado;
-            } else {
-                document.getElementById('resultadoReto').innerText = 'Por favor selecciona una opción de cada columna.';
-            }
-        }
-    </script>
-</body>
-</html>
+            // Mostrar opciones
+            document.querySelectorAll('.opcion').forEach(el => el.classList.add('visible'));
+            
+            // Seleccionar al azar un grupo y un reto
+            const grupoRandom = Math.floor(Math.random() * 8) + 1;
+            const retoRandom = Math.floor(Math.random() * 6) + 1;
+
+            grupoSeleccionado = document.getElementById
