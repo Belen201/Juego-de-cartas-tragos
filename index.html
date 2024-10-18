@@ -1,3 +1,5 @@
+Aquí tienes el código modificado con el nuevo juego llamado “Retos”, que incluye dos columnas: una con las opciones de “a quién se lo tienes que hacer” y otra con los retos. He integrado la lógica de selección de una opción de cada columna, con un botón para generar combinaciones aleatorias.
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,78 +27,26 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .tablero {
-            display: grid;
-            grid-template-columns: repeat(6, 60px);
-            grid-template-rows: repeat(6, 60px);
-            gap: 5px;
-            justify-content: center;
-            margin: 20px auto;
+        .columnas {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
         }
-        .casilla {
-            width: 60px;
-            height: 60px;
+        .columna {
+            width: 45%;
+        }
+        .opcion {
             background-color: #3498db;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
+            padding: 10px;
+            margin: 5px;
             border-radius: 5px;
-            position: relative;
-        }
-        .ficha {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 5px;
-        }
-        .ficha.jugador1 {
-            background-color: red;
-        }
-        .ficha.jugador2 {
-            background-color: blue;
-        }
-        .ficha.jugador3 {
-            background-color: green;
-        }
-        .ficha.jugador4 {
-            background-color: yellow;
-        }
-        .ficha.jugador5 {
-            background-color: purple;
-        }
-        .ficha.jugador6 {
-            background-color: orange;
-        }
-        .card {
-            width: 150px;
-            height: 200px;
-            display: inline-block;
-            margin: 20px;
-            background-color: lightblue;
-            text-align: center;
-            line-height: 200px;
-            font-size: 24px;
-            color: white;
             cursor: pointer;
-            border-radius: 10px;
         }
-        .card.back {
-            background-color: #333;
-            color: white;
-            line-height: normal;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .card img {
-            width: 100px;
-        }
-        /* Colores pastel */
-        #pantallaSeleccion {
-            background-color: #f8d5e5;
+        .resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -108,6 +58,7 @@
     <div id="pantallaSeleccion" class="section active">
         <button onclick="mostrarSeccion('cartas')">Juego de Cartas</button>
         <button onclick="mostrarSeccion('oca')">Ocalimocho</button>
+        <button onclick="mostrarSeccion('retos')">Retos</button>
     </div>
 
     <!-- Juego de Cartas -->
@@ -137,10 +88,92 @@
             <p id="resultadoDado"></p>
             <p id="mensajeAccion"></p>
         </div>
-        <div id="descripcionCasilla"></div>
+        <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
+    </div>
+
+    <!-- Retos -->
+    <div id="retos" class="section">
+        <h2>Retos</h2>
+        <div class="columnas">
+            <div class="columna">
+                <h3>Consigue que un...</h3>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Sintexo')">Sintexo</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Zarzas')">Zarzas</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Cencerros')">Cencerros</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Revolución')">Revolución</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Nómadas')">Nómadas</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Ñapas')">Ñapas</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Alguien que no tenga peña')">Alguien sin peña</div>
+                <div class="opcion" onclick="seleccionarOpcion('grupo', 'DJ')">DJ</div>
+            </div>
+            <div class="columna">
+                <h3>Haga el reto de...</h3>
+                <div class="opcion" onclick="seleccionarOpcion('reto', 'Beber un chupito')">Beber un chupito</div>
+                <div class="opcion" onclick="seleccionarOpcion('reto', 'Subir al escenario')">Subir al escenario</div>
+                <div class="opcion" onclick="seleccionarOpcion('reto', 'Bebérse un cubata entero')">Bebérse un cubata entero</div>
+                <div class="opcion" onclick="seleccionarOpcion('reto', 'Dar una vuelta en el aire')">Dar una vuelta en el aire</div>
+                <div class="opcion" onclick="seleccionarOpcion('reto', 'Hacer un brindis')">Hacer un brindis</div>
+                <div class="opcion" onclick="seleccionarOpcion('reto', 'Cantar una canción')">Cantar una canción</div>
+            </div>
+        </div>
+        <button onclick="generarReto()">Generar Reto</button>
+        <div class="resultado" id="resultadoReto"></div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
 
     <script>
         // Función para mostrar la sección seleccionada
-        function mostrar
+        function mostrarSeccion(seccionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(seccionId).classList.add('active');
+        }
+
+        // Configuración de juego de cartas
+        const accionesCartas = [
+            "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
+            "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
+            "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
+        ];
+
+        function girarCarta(elemento, indice) {
+            elemento.classList.remove("back");
+            elemento.innerText = accionesCartas[indice - 1];
+        }
+
+        // Opciones seleccionadas en el juego de retos
+        let grupoSeleccionado = '';
+        let retoSeleccionado = '';
+
+        // Función para seleccionar una opción
+        function seleccionarOpcion(tipo, valor) {
+            if (tipo === 'grupo') {
+                grupoSeleccionado = valor;
+            } else if (tipo === 'reto') {
+                retoSeleccionado = valor;
+            }
+        }
+
+        // Función para generar el reto
+        function generarReto() {
+            if (grupoSeleccionado && retoSeleccionado) {
+                const resultado = `Consigue que un ${grupoSeleccionado} ${retoSeleccionado}.`;
+                document.getElementById('resultadoReto').innerText = resultado;
+            } else {
+                document.getElementById('resultadoReto').innerText = 'Por favor selecciona una opción de cada columna.';
+            }
+        }
+    </script>
+</body>
+</html>
+
+Cambios y Explicación:
+
+	1.	Nueva Sección de “Retos”: He añadido una nueva sección de juego llamada “Retos”, donde los jugadores pueden seleccionar de dos columnas diferentes:
+	•	Una columna indica a quién se le debe hacer el reto (por ejemplo: “Sintexo”, “Zarzas”, “Alguien sin peña”, etc.).
+	•	La otra columna contiene los retos (por ejemplo: “Beber un chupito”, “Subir al escenario”, etc.).
+	2.	Interactividad:
+	•	Los usuarios pueden hacer clic en las opciones de cada columna para seleccionar el grupo y el reto.
+	•	Al hacer clic en “Generar Reto”, el programa mostrará una combinación de las opciones seleccionadas en el formato: “Consigue que un [grupo] [reto]”.
+	3.	Diseño Simplificado: El diseño sigue un estilo sencillo con dos columnas y botones para seleccionar opciones. La funcionalidad es directa y fácil de usar.
