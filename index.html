@@ -59,13 +59,15 @@
         }
 
         .opcion {
-            background-color: #3498db;
-            color: black;
             padding: 10px;
             margin: 5px;
             border-radius: 5px;
             cursor: pointer;
+            color: black;
         }
+
+        .pastel-grupo { background-color: #FAE3D6; }  /* Color pastel para grupo */
+        .pastel-reto { background-color: #D6F0FA; }  /* Color pastel para reto */
 
         .resultado {
             margin-top: 20px;
@@ -96,17 +98,7 @@
     <!-- Juego de Cartas -->
     <div id="cartas" class="section">
         <h2>Juego de Cartas</h2>
-        <div class="cards">
-            <div class="card pastel-1" onclick="girarCarta(this, 1)">Carta 1</div>
-            <div class="card pastel-2" onclick="girarCarta(this, 2)">Carta 2</div>
-            <div class="card pastel-3" onclick="girarCarta(this, 3)">Carta 3</div>
-            <div class="card pastel-4" onclick="girarCarta(this, 4)">Carta 4</div>
-            <div class="card pastel-5" onclick="girarCarta(this, 5)">Carta 5</div>
-            <div class="card pastel-6" onclick="girarCarta(this, 6)">Carta 6</div>
-            <div class="card pastel-7" onclick="girarCarta(this, 7)">Carta 7</div>
-            <div class="card pastel-8" onclick="girarCarta(this, 8)">Carta 8</div>
-            <div class="card pastel-3" onclick="mostrarSeccion('retos')">Juego del Reto</div>
-        </div>
+        <div id="cartaContainer" class="cards"></div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
 
@@ -116,11 +108,11 @@
         <div class="columnas">
             <div class="columna">
                 <h3>Consigue que un...</h3>
-                <div class="opcion pastel-1" id="grupo" onclick="seleccionarOpcion('grupo')">Corbalán</div>
+                <div class="opcion pastel-grupo" id="grupo" onclick="seleccionarOpcion('grupo')">Corbalán</div>
             </div>
             <div class="columna">
                 <h3>Haga el reto de...</h3>
-                <div class="opcion pastel-2" id="reto" onclick="seleccionarOpcion('reto')">Corbalán</div>
+                <div class="opcion pastel-reto" id="reto" onclick="seleccionarOpcion('reto')">Corbalán</div>
             </div>
         </div>
         <div class="resultado" id="resultadoReto"></div>
@@ -140,8 +132,38 @@
         const accionesCartas = [
             "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
             "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
-            "Un chupito para otro", "Un chupito para ti y otra persona"
+            "Un chupito para otro", "Un chupito para ti y otra persona", 
+            "Juego del reto"
         ];
+
+        // Colores pastel para las cartas
+        const coloresPastel = [
+            'pastel-1', 'pastel-2', 'pastel-3', 'pastel-4', 
+            'pastel-5', 'pastel-6', 'pastel-7', 'pastel-8'
+        ];
+
+        // Función para generar cartas aleatoriamente
+        function generarCartas() {
+            const cartaContainer = document.getElementById('cartaContainer');
+            cartaContainer.innerHTML = ''; // Limpiar las cartas anteriores
+
+            const cartas = accionesCartas.map((accion, index) => ({
+                accion,
+                color: coloresPastel[index % coloresPastel.length]
+            }));
+
+            // Barajar las cartas aleatoriamente
+            cartas.sort(() => Math.random() - 0.5);
+
+            // Generar el HTML de las cartas
+            cartas.forEach((carta, index) => {
+                const cartaDiv = document.createElement('div');
+                cartaDiv.classList.add('card', carta.color);
+                cartaDiv.innerText = 'ZC';  // Mostrar "ZC" al inicio
+                cartaDiv.onclick = () => girarCarta(cartaDiv, index + 1); // Añadir funcionalidad al hacer clic
+                cartaContainer.appendChild(cartaDiv);
+            });
+        }
 
         // Función para girar la carta y mostrar la acción
         function girarCarta(elemento, indice) {
@@ -150,6 +172,9 @@
             elemento.classList.add("card-revealed");
             elemento.innerText = accionesCartas[indice - 1]; // Muestra la acción según el índice
         }
+
+        // Ejecutar la función para generar las cartas cuando la página se carga
+        window.onload = generarCartas;
 
         // Opciones para los retos
         const grupos = [
