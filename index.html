@@ -47,15 +47,6 @@
         .opcion.pastel-2 {
             background-color: #ffdfba; /* Pastel orange */
         }
-        .opcion.pastel-3 {
-            background-color: #ffffba; /* Pastel yellow */
-        }
-        .opcion.pastel-4 {
-            background-color: #baffc9; /* Pastel green */
-        }
-        .opcion.pastel-5 {
-            background-color: #bae1ff; /* Pastel blue */
-        }
         .resultado {
             margin-top: 20px;
             font-size: 18px;
@@ -96,22 +87,13 @@
         <div class="columnas">
             <div class="columna">
                 <h3>Consigue que un...</h3>
-                <div class="opcion pastel-1" id="grupo1" onclick="seleccionarOpcion('grupo', 'grupo1')">Corbalán</div>
-                <div class="opcion pastel-2" id="grupo2" onclick="seleccionarOpcion('grupo', 'grupo2')">Corbalán</div>
-                <div class="opcion pastel-3" id="grupo3" onclick="seleccionarOpcion('grupo', 'grupo3')">Corbalán</div>
-                <div class="opcion pastel-4" id="grupo4" onclick="seleccionarOpcion('grupo', 'grupo4')">Corbalán</div>
-                <div class="opcion pastel-5" id="grupo5" onclick="seleccionarOpcion('grupo', 'grupo5')">Corbalán</div>
+                <div class="opcion pastel-1" id="grupo" onclick="seleccionarOpcion('grupo', 'grupo')">Corbalán</div>
             </div>
             <div class="columna">
                 <h3>Haga el reto de...</h3>
-                <div class="opcion pastel-1" id="reto1" onclick="seleccionarOpcion('reto', 'reto1')">Corbalán</div>
-                <div class="opcion pastel-2" id="reto2" onclick="seleccionarOpcion('reto', 'reto2')">Corbalán</div>
-                <div class="opcion pastel-3" id="reto3" onclick="seleccionarOpcion('reto', 'reto3')">Corbalán</div>
-                <div class="opcion pastel-4" id="reto4" onclick="seleccionarOpcion('reto', 'reto4')">Corbalán</div>
-                <div class="opcion pastel-5" id="reto5" onclick="seleccionarOpcion('reto', 'reto5')">Corbalán</div>
+                <div class="opcion pastel-2" id="reto" onclick="seleccionarOpcion('reto', 'reto')">Corbalán</div>
             </div>
         </div>
-        <button onclick="generarReto()">Generar Reto</button>
         <div class="resultado" id="resultadoReto"></div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
@@ -129,37 +111,22 @@
         const grupos = [
             "Sintexo", "Zarzas", "Cencerros", 
             "Revolución", "Nómadas", "Ñapas", 
-            "Alguien sin peña", "DJ", "Saltimbanquis", "Chirigota"
+            "Alguien sin peña", "DJ"
         ];
 
         const retos = [
             "Beber un chupito", "Subir al escenario", "Bebérse un cubata entero", 
-            "Dar una vuelta en el aire", "Hacer un brindis", "Cantar una canción",
-            "Imitar a alguien famoso", "Hacer una coreografía", "Contar un chiste"
+            "Dar una vuelta en el aire", "Hacer un brindis", "Cantar una canción"
         ];
-
-        // Variables para almacenar las selecciones
-        let grupoSeleccionado = '';
-        let retoSeleccionado = '';
 
         // Función para seleccionar aleatoriamente una opción
         function seleccionarOpcion(tipo, id) {
             if (tipo === 'grupo') {
-                grupoSeleccionado = grupos[Math.floor(Math.random() * grupos.length)];
-                document.getElementById(id).innerText = grupoSeleccionado; // Actualiza el botón con la selección
+                const grupoSeleccionado = grupos[Math.floor(Math.random() * grupos.length)];
+                document.getElementById(id).innerText = grupoSeleccionado; // Actualiza el recuadro con la selección
             } else if (tipo === 'reto') {
-                retoSeleccionado = retos[Math.floor(Math.random() * retos.length)];
-                document.getElementById(id).innerText = retoSeleccionado; // Actualiza el botón con la selección
-            }
-        }
-
-        // Función para generar el reto final
-        function generarReto() {
-            if (grupoSeleccionado && retoSeleccionado) {
-                const resultado = `Consigue que un ${grupoSeleccionado} ${retoSeleccionado}.`;
-                document.getElementById('resultadoReto').innerText = resultado;
-            } else {
-                document.getElementById('resultadoReto').innerText = 'Por favor selecciona una opción de cada columna.';
+                const retoSeleccionado = retos[Math.floor(Math.random() * retos.length)];
+                document.getElementById(id).innerText = retoSeleccionado; // Actualiza el recuadro con la selección
             }
         }
     </script>
