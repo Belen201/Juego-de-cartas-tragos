@@ -41,6 +41,21 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .opcion.pastel-1 {
+            background-color: #ffb3ba; /* Pastel red */
+        }
+        .opcion.pastel-2 {
+            background-color: #ffdfba; /* Pastel orange */
+        }
+        .opcion.pastel-3 {
+            background-color: #ffffba; /* Pastel yellow */
+        }
+        .opcion.pastel-4 {
+            background-color: #baffc9; /* Pastel green */
+        }
+        .opcion.pastel-5 {
+            background-color: #bae1ff; /* Pastel blue */
+        }
         .resultado {
             margin-top: 20px;
             font-size: 18px;
@@ -81,23 +96,19 @@
         <div class="columnas">
             <div class="columna">
                 <h3>Consigue que un...</h3>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Sintexo')">Sintexo</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Zarzas')">Zarzas</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Cencerros')">Cencerros</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Revolución')">Revolución</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Nómadas')">Nómadas</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Ñapas')">Ñapas</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'Alguien que no tenga peña')">Alguien sin peña</div>
-                <div class="opcion" onclick="seleccionarOpcion('grupo', 'DJ')">DJ</div>
+                <div class="opcion pastel-1" onclick="seleccionarOpcion('grupo')">Opción aleatoria</div>
+                <div class="opcion pastel-2" onclick="seleccionarOpcion('grupo')">Opción aleatoria</div>
+                <div class="opcion pastel-3" onclick="seleccionarOpcion('grupo')">Opción aleatoria</div>
+                <div class="opcion pastel-4" onclick="seleccionarOpcion('grupo')">Opción aleatoria</div>
+                <div class="opcion pastel-5" onclick="seleccionarOpcion('grupo')">Opción aleatoria</div>
             </div>
             <div class="columna">
                 <h3>Haga el reto de...</h3>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Beber un chupito')">Beber un chupito</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Subir al escenario')">Subir al escenario</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Bebérse un cubata entero')">Bebérse un cubata entero</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Dar una vuelta en el aire')">Dar una vuelta en el aire</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Hacer un brindis')">Hacer un brindis</div>
-                <div class="opcion" onclick="seleccionarOpcion('reto', 'Cantar una canción')">Cantar una canción</div>
+                <div class="opcion pastel-1" onclick="seleccionarOpcion('reto')">Opción aleatoria</div>
+                <div class="opcion pastel-2" onclick="seleccionarOpcion('reto')">Opción aleatoria</div>
+                <div class="opcion pastel-3" onclick="seleccionarOpcion('reto')">Opción aleatoria</div>
+                <div class="opcion pastel-4" onclick="seleccionarOpcion('reto')">Opción aleatoria</div>
+                <div class="opcion pastel-5" onclick="seleccionarOpcion('reto')">Opción aleatoria</div>
             </div>
         </div>
         <button onclick="generarReto()">Generar Reto</button>
@@ -114,32 +125,34 @@
             document.getElementById(seccionId).classList.add('active');
         }
 
-        // Configuración de juego de cartas
-        const accionesCartas = [
-            "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
-            "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
-            "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
+        // Listas de opciones para los retos
+        const grupos = [
+            "Sintexo", "Zarzas", "Cencerros", 
+            "Revolución", "Nómadas", "Ñapas", 
+            "Alguien sin peña", "DJ"
         ];
 
-        function girarCarta(elemento, indice) {
-            elemento.classList.remove("back");
-            elemento.innerText = accionesCartas[indice - 1];
-        }
+        const retos = [
+            "Beber un chupito", "Subir al escenario", "Bebérse un cubata entero", 
+            "Dar una vuelta en el aire", "Hacer un brindis", "Cantar una canción"
+        ];
 
-        // Opciones seleccionadas en el juego de retos
+        // Variables para almacenar las selecciones
         let grupoSeleccionado = '';
         let retoSeleccionado = '';
 
-        // Función para seleccionar una opción
-        function seleccionarOpcion(tipo, valor) {
+        // Función para seleccionar aleatoriamente una opción
+        function seleccionarOpcion(tipo) {
             if (tipo === 'grupo') {
-                grupoSeleccionado = valor;
+                grupoSeleccionado = grupos[Math.floor(Math.random() * grupos.length)];
+                alert(`Has seleccionado el grupo: ${grupoSeleccionado}`);
             } else if (tipo === 'reto') {
-                retoSeleccionado = valor;
+                retoSeleccionado = retos[Math.floor(Math.random() * retos.length)];
+                alert(`Has seleccionado el reto: ${retoSeleccionado}`);
             }
         }
 
-        // Función para generar el reto
+        // Función para generar el reto final
         function generarReto() {
             if (grupoSeleccionado && retoSeleccionado) {
                 const resultado = `Consigue que un ${grupoSeleccionado} ${retoSeleccionado}.`;
