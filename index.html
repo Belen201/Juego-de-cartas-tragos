@@ -83,6 +83,14 @@
         .columna {
             width: 45%;
         }
+
+        /* Estilo para la pantalla de selección */
+        #pantallaSeleccion {
+            background-color: #F7D3D3; /* Color pastel de fondo */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -136,6 +144,13 @@
             "Juego del reto"
         ];
 
+        // Retos que pueden salir en las cartas
+        const retosCartas = [
+            "Beber un chupito", "Subir al escenario", "Bebérse un cubata entero", 
+            "Dar una vuelta en el aire", "Hacer un brindis", "Cantar una canción",
+            "Perderse en el bar", "Bailar con un extraño"
+        ];
+
         // Colores pastel para las cartas
         const coloresPastel = [
             'pastel-1', 'pastel-2', 'pastel-3', 'pastel-4', 
@@ -149,6 +164,7 @@
 
             const cartas = accionesCartas.map((accion, index) => ({
                 accion,
+                reto: retosCartas[index % retosCartas.length],
                 color: coloresPastel[index % coloresPastel.length]
             }));
 
@@ -160,7 +176,7 @@
                 const cartaDiv = document.createElement('div');
                 cartaDiv.classList.add('card', carta.color);
                 cartaDiv.innerText = 'ZC';  // Mostrar "ZC" al inicio
-                cartaDiv.onclick = () => girarCarta(cartaDiv, index + 1); // Añadir funcionalidad al hacer clic
+                cartaDiv.onclick = () => girarCarta(cartaDiv, index); // Añadir funcionalidad al hacer clic
                 cartaContainer.appendChild(cartaDiv);
             });
         }
@@ -170,7 +186,7 @@
             if (elemento.classList.contains("card-revealed")) return; // Si ya está revelada, no hace nada
 
             elemento.classList.add("card-revealed");
-            elemento.innerText = accionesCartas[indice - 1]; // Muestra la acción según el índice
+            elemento.innerText = `${accionesCartas[indice]} - ${retosCartas[indice]}`; // Muestra la acción y reto según el índice
         }
 
         // Ejecutar la función para generar las cartas cuando la página se carga
@@ -204,9 +220,4 @@
         function mostrarResultado() {
             const grupo = document.getElementById('grupo').innerText;
             const reto = document.getElementById('reto').innerText;
-            const resultado = `Consigue que un ${grupo} ${reto}.`;
-            document.getElementById('resultadoReto').innerText = resultado;
-        }
-    </script>
-</body>
-</html>
+            const
