@@ -25,32 +25,32 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .columnas {
+        .cards {
             display: flex;
-            justify-content: space-around;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
             margin: 20px;
         }
-        .columna {
-            width: 45%;
-        }
-        .opcion {
+        .card {
+            width: 100px;
+            height: 150px;
             background-color: #3498db;
-            color: black; /* Letras de color negro */
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
+            color: black;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            border-radius: 10px;
         }
-        .opcion.pastel-1 {
-            background-color: #ffb3ba; /* Pastel red */
+        .card.back {
+            background-color: #555;
+            color: #f7f7f7;
         }
-        .opcion.pastel-2 {
-            background-color: #ffdfba; /* Pastel orange */
-        }
-        .resultado {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
+        .card-revealed {
+            background-color: #e74c3c;
+            color: white;
         }
     </style>
 </head>
@@ -68,15 +68,15 @@
     <div id="cartas" class="section">
         <h2>Juego de Cartas</h2>
         <div class="cards">
-            <div class="card back" onclick="girarCarta(this, 1)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 2)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 3)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 4)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 5)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 6)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 7)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 8)">ZC</div>
-            <div class="card back" onclick="girarCarta(this, 9)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 1)">Carta 1</div>
+            <div class="card back" onclick="girarCarta(this, 2)">Carta 2</div>
+            <div class="card back" onclick="girarCarta(this, 3)">Carta 3</div>
+            <div class="card back" onclick="girarCarta(this, 4)">Carta 4</div>
+            <div class="card back" onclick="girarCarta(this, 5)">Carta 5</div>
+            <div class="card back" onclick="girarCarta(this, 6)">Carta 6</div>
+            <div class="card back" onclick="girarCarta(this, 7)">Carta 7</div>
+            <div class="card back" onclick="girarCarta(this, 8)">Carta 8</div>
+            <div class="card back" onclick="girarCarta(this, 9)">Carta 9</div>
         </div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
@@ -107,7 +107,23 @@
             document.getElementById(seccionId).classList.add('active');
         }
 
-        // Listas de opciones para los retos
+        // Acciones que pueden salir en las cartas
+        const accionesCartas = [
+            "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
+            "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
+            "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
+        ];
+
+        // Función para girar la carta y mostrar la acción
+        function girarCarta(elemento, indice) {
+            if (elemento.classList.contains("back")) {
+                elemento.classList.remove("back");
+                elemento.classList.add("card-revealed");
+                elemento.innerText = accionesCartas[indice - 1]; // Muestra la acción según el índice
+            }
+        }
+
+        // Opciones aleatorias para los retos
         const grupos = [
             "Sintexo", "Zarzas", "Cencerros", 
             "Revolución", "Nómadas", "Ñapas", 
