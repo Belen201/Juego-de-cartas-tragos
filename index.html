@@ -44,13 +44,42 @@
             cursor: pointer;
             border-radius: 10px;
         }
-        .card.back {
-            background-color: #555;
-            color: #f7f7f7;
-        }
+        .pastel-1 { background-color: #FAD9D6; } /* Pastel rosa */
+        .pastel-2 { background-color: #FAF3D6; } /* Pastel amarillo */
+        .pastel-3 { background-color: #D6FAD6; } /* Pastel verde */
+        .pastel-4 { background-color: #D6F5FA; } /* Pastel azul */
+        .pastel-5 { background-color: #E1D6FA; } /* Pastel morado */
+        .pastel-6 { background-color: #FAD6EB; } /* Pastel rosa claro */
+        .pastel-7 { background-color: #FAE3D6; } /* Pastel naranja claro */
+        .pastel-8 { background-color: #D6F0FA; } /* Pastel celeste */
+        
         .card-revealed {
             background-color: #e74c3c;
             color: white;
+        }
+
+        .opcion {
+            background-color: #3498db;
+            color: black;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .columnas {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .columna {
+            width: 45%;
         }
     </style>
 </head>
@@ -68,15 +97,15 @@
     <div id="cartas" class="section">
         <h2>Juego de Cartas</h2>
         <div class="cards">
-            <div class="card back" onclick="girarCarta(this, 1)">Carta 1</div>
-            <div class="card back" onclick="girarCarta(this, 2)">Carta 2</div>
-            <div class="card back" onclick="girarCarta(this, 3)">Carta 3</div>
-            <div class="card back" onclick="girarCarta(this, 4)">Carta 4</div>
-            <div class="card back" onclick="girarCarta(this, 5)">Carta 5</div>
-            <div class="card back" onclick="girarCarta(this, 6)">Carta 6</div>
-            <div class="card back" onclick="girarCarta(this, 7)">Carta 7</div>
-            <div class="card back" onclick="girarCarta(this, 8)">Carta 8</div>
-            <div class="card back" onclick="girarCarta(this, 9)">Carta 9</div>
+            <div class="card pastel-1" onclick="girarCarta(this, 1)">Carta 1</div>
+            <div class="card pastel-2" onclick="girarCarta(this, 2)">Carta 2</div>
+            <div class="card pastel-3" onclick="girarCarta(this, 3)">Carta 3</div>
+            <div class="card pastel-4" onclick="girarCarta(this, 4)">Carta 4</div>
+            <div class="card pastel-5" onclick="girarCarta(this, 5)">Carta 5</div>
+            <div class="card pastel-6" onclick="girarCarta(this, 6)">Carta 6</div>
+            <div class="card pastel-7" onclick="girarCarta(this, 7)">Carta 7</div>
+            <div class="card pastel-8" onclick="girarCarta(this, 8)">Carta 8</div>
+            <div class="card pastel-3" onclick="mostrarSeccion('retos')">Juego del Reto</div>
         </div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
@@ -87,11 +116,11 @@
         <div class="columnas">
             <div class="columna">
                 <h3>Consigue que un...</h3>
-                <div class="opcion pastel-1" id="grupo" onclick="seleccionarOpcion('grupo', 'grupo')">Corbalán</div>
+                <div class="opcion pastel-1" id="grupo" onclick="seleccionarOpcion('grupo')">Corbalán</div>
             </div>
             <div class="columna">
                 <h3>Haga el reto de...</h3>
-                <div class="opcion pastel-2" id="reto" onclick="seleccionarOpcion('reto', 'reto')">Corbalán</div>
+                <div class="opcion pastel-2" id="reto" onclick="seleccionarOpcion('reto')">Corbalán</div>
             </div>
         </div>
         <div class="resultado" id="resultadoReto"></div>
@@ -111,19 +140,18 @@
         const accionesCartas = [
             "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
             "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
-            "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
+            "Un chupito para otro", "Un chupito para ti y otra persona"
         ];
 
         // Función para girar la carta y mostrar la acción
         function girarCarta(elemento, indice) {
-            if (elemento.classList.contains("back")) {
-                elemento.classList.remove("back");
-                elemento.classList.add("card-revealed");
-                elemento.innerText = accionesCartas[indice - 1]; // Muestra la acción según el índice
-            }
+            if (elemento.classList.contains("card-revealed")) return; // Si ya está revelada, no hace nada
+
+            elemento.classList.add("card-revealed");
+            elemento.innerText = accionesCartas[indice - 1]; // Muestra la acción según el índice
         }
 
-        // Opciones aleatorias para los retos
+        // Opciones para los retos
         const grupos = [
             "Sintexo", "Zarzas", "Cencerros", 
             "Revolución", "Nómadas", "Ñapas", 
@@ -135,15 +163,24 @@
             "Dar una vuelta en el aire", "Hacer un brindis", "Cantar una canción"
         ];
 
-        // Función para seleccionar aleatoriamente una opción
-        function seleccionarOpcion(tipo, id) {
+        // Función para seleccionar opciones de retos
+        function seleccionarOpcion(tipo) {
             if (tipo === 'grupo') {
                 const grupoSeleccionado = grupos[Math.floor(Math.random() * grupos.length)];
-                document.getElementById(id).innerText = grupoSeleccionado; // Actualiza el recuadro con la selección
+                document.getElementById('grupo').innerText = grupoSeleccionado;
             } else if (tipo === 'reto') {
                 const retoSeleccionado = retos[Math.floor(Math.random() * retos.length)];
-                document.getElementById(id).innerText = retoSeleccionado; // Actualiza el recuadro con la selección
+                document.getElementById('reto').innerText = retoSeleccionado;
             }
+            mostrarResultado();
+        }
+
+        // Función para mostrar el reto generado
+        function mostrarResultado() {
+            const grupo = document.getElementById('grupo').innerText;
+            const reto = document.getElementById('reto').innerText;
+            const resultado = `Consigue que un ${grupo} ${reto}.`;
+            document.getElementById('resultadoReto').innerText = resultado;
         }
     </script>
 </body>
