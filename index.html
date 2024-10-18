@@ -25,27 +25,21 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .cards {
+        .columnas {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            justify-content: space-around;
+            margin: 20px;
         }
-        .card {
-            width: 100px;
-            height: 150px;
+        .columna {
+            width: 45%;
+        }
+        .opcion {
             background-color: #3498db;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: white;
-            font-size: 24px;
-            transition: transform 0.5s;
-        }
-        .card.flipped {
-            background-color: #e74c3c;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
         }
         .resultado {
             margin-top: 20px;
@@ -68,15 +62,15 @@
     <div id="cartas" class="section">
         <h2>Juego de Cartas</h2>
         <div class="cards">
-            <div class="card" onclick="girarCarta(this, 1)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 2)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 3)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 4)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 5)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 6)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 7)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 8)">Carta</div>
-            <div class="card" onclick="girarCarta(this, 9)">Carta</div>
+            <div class="card back" onclick="girarCarta(this, 1)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 2)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 3)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 4)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 5)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 6)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 7)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 8)">ZC</div>
+            <div class="card back" onclick="girarCarta(this, 9)">ZC</div>
         </div>
         <button onclick="mostrarSeccion('pantallaSeleccion')">Volver</button>
     </div>
@@ -128,10 +122,8 @@
         ];
 
         function girarCarta(elemento, indice) {
-            if (!elemento.classList.contains('flipped')) {
-                elemento.classList.add("flipped");
-                elemento.innerText = accionesCartas[indice - 1];
-            }
+            elemento.classList.remove("back");
+            elemento.innerText = accionesCartas[indice - 1];
         }
 
         // Opciones seleccionadas en el juego de retos
