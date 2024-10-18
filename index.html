@@ -44,14 +44,6 @@
             cursor: pointer;
             border-radius: 10px;
         }
-        .pastel-1 { background-color: #FAD9D6; } /* Pastel rosa */
-        .pastel-2 { background-color: #FAF3D6; } /* Pastel amarillo */
-        .pastel-3 { background-color: #D6FAD6; } /* Pastel verde */
-        .pastel-4 { background-color: #D6F5FA; } /* Pastel azul */
-        .pastel-5 { background-color: #E1D6FA; } /* Pastel morado */
-        .pastel-6 { background-color: #FAD6EB; } /* Pastel rosa claro */
-        .pastel-7 { background-color: #FAE3D6; } /* Pastel naranja claro */
-        .pastel-8 { background-color: #D6F0FA; } /* Pastel celeste */
         
         .card-revealed {
             background-color: #e74c3c;
@@ -66,9 +58,6 @@
             color: black;
         }
 
-        .pastel-grupo { background-color: #FAE3D6; }  /* Color pastel para grupo */
-        .pastel-reto { background-color: #D6F0FA; }  /* Color pastel para reto */
-
         .resultado {
             margin-top: 20px;
             font-size: 18px;
@@ -82,14 +71,6 @@
         }
         .columna {
             width: 45%;
-        }
-
-        /* Estilo para la pantalla de selección */
-        #pantallaSeleccion {
-            background-color: #F7D3D3; /* Color pastel de fondo */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -116,11 +97,11 @@
         <div class="columnas">
             <div class="columna">
                 <h3>Consigue que un...</h3>
-                <div class="opcion pastel-grupo" id="grupo" onclick="seleccionarOpcion('grupo')">Corbalán</div>
+                <div class="opcion" id="grupo" onclick="seleccionarOpcion('grupo')">Corbalán</div>
             </div>
             <div class="columna">
                 <h3>Haga el reto de...</h3>
-                <div class="opcion pastel-reto" id="reto" onclick="seleccionarOpcion('reto')">Corbalán</div>
+                <div class="opcion" id="reto" onclick="seleccionarOpcion('reto')">Corbalán</div>
             </div>
         </div>
         <div class="resultado" id="resultadoReto"></div>
@@ -134,6 +115,9 @@
                 section.classList.remove('active');
             });
             document.getElementById(seccionId).classList.add('active');
+            if (seccionId === 'cartas') {
+                generarCartas(); // Generar nuevas cartas al entrar en la sección
+            }
         }
 
         // Acciones que pueden salir en las cartas
@@ -165,32 +149,31 @@
             const cartas = accionesCartas.map((accion, index) => ({
                 accion,
                 reto: retosCartas[index % retosCartas.length],
-                color: coloresPastel[index % coloresPastel.length]
             }));
 
             // Barajar las cartas aleatoriamente
             cartas.sort(() => Math.random() - 0.5);
 
             // Generar el HTML de las cartas
-            cartas.forEach((carta, index) => {
+            cartas.forEach((carta) => {
                 const cartaDiv = document.createElement('div');
-                cartaDiv.classList.add('card', carta.color);
+                cartaDiv.classList.add('card');
                 cartaDiv.innerText = 'ZC';  // Mostrar "ZC" al inicio
-                cartaDiv.onclick = () => girarCarta(cartaDiv, index); // Añadir funcionalidad al hacer clic
+                cartaDiv.onclick = () => girarCarta(cartaDiv, carta); // Añadir funcionalidad al hacer clic
                 cartaContainer.appendChild(cartaDiv);
             });
         }
 
         // Función para girar la carta y mostrar la acción
-        function girarCarta(elemento, indice) {
+        function girarCarta(elemento, carta) {
             if (elemento.classList.contains("card-revealed")) return; // Si ya está revelada, no hace nada
 
             elemento.classList.add("card-revealed");
-            elemento.innerText = `${accionesCartas[indice]} - ${retosCartas[indice]}`; // Muestra la acción y reto según el índice
+            elemento.innerText = `${carta.accion} - ${carta.reto}`; // Muestra la acción y reto según el índice
         }
 
-        // Ejecutar la función para generar las cartas cuando la página se carga
-        window.onload = generarCartas;
+        // Ejecutar la función para generar las cartas cuando se entra en la sección
+        window.onload = () => mostrarSeccion('pantallaSeleccion');
 
         // Opciones para los retos
         const grupos = [
@@ -220,4 +203,9 @@
         function mostrarResultado() {
             const grupo = document.getElementById('grupo').innerText;
             const reto = document.getElementById('reto').innerText;
-            const
+            const resultado = document.getElementById('resultadoReto');
+            resultado.innerText = `Grupo: ${grupo}, Reto: ${reto}`;
+        }
+    </script>
+</body>
+</html>
