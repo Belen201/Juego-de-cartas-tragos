@@ -98,14 +98,6 @@
         #pantallaSeleccion {
             background-color: #f8d5e5;
         }
-        /* Fondo del tapete para cartas */
-        #cartas {
-            background-color: #2e8b57;
-        }
-        /* Fondo del tablero de la oca */
-        #oca {
-            background-color: #faf0e6;
-        }
     </style>
 </head>
 <body>
@@ -151,19 +143,4 @@
 
     <script>
         // Función para mostrar la sección seleccionada
-        function mostrarSeccion(seccionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(seccionId).classList.add('active');
-        }
-
-        // Configuración del juego de cartas
-        const accionesCartas = [
-            "Bebe 1 trago", "Bebe 2 tragos", "Bebe 3 tragos", 
-            "Bebe 4 tragos", "Bébete el cubata entero", "Un chupito para ti", 
-            "Un chupito para otro", "Un chupito para ti y otra persona", "Te salvas"
-        ];
-
-        // Función para girar la carta
-        function girarCarta(elemento, indice
+        function mostrar
